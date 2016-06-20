@@ -18,12 +18,12 @@ source $1" > submit;
 msub submit;
 rm submit;
 
+ 
+time=cat *ajob | grep *cput=
 
-time=cat  | grep *cput=
 
-
-log()
-diskspace()
+#log()
+#diskspace()
 
 
 
@@ -31,5 +31,15 @@ echo "backup completed in:", time
 
 
 
+cd .. | if [ -a FILE ] == False;
+	then mkdir backups	
+	else then a
+	fi
 
+
+
+cp $0  
+
+
+rm *ajob
 
