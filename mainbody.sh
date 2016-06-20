@@ -19,7 +19,7 @@ msub submit;
 rm submit;
 
 
-time=`cat | grep -Eo 'cput=.{0,8}'
+time=cat  | grep cput=
 
 
 log()
