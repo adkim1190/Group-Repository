@@ -19,7 +19,7 @@ msub submit;
 rm submit;
 
  
-time=cat *ajob | grep *cput=
+time=`cat testing.txt | grep oE 'cput=.{0,8}' | tr -d 'cput='
 
 
 #log()
@@ -31,15 +31,15 @@ echo "backup completed in:", time
 
 
 
-cd .. | if [ -a FILE ] == False;
-	then mkdir backups	
-	else then a
-	fi
+#cd .. | if [ -a FILE ] == False;
+#	then mkdir backups	
+#	else then a
+#	fi
 
 
 
-cp $0  
+#cp $0  
 
 
-rm *ajob
+#rm *ajob
 
