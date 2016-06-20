@@ -19,6 +19,7 @@ msub submit;
 rm submit;
 
 
+time=cat  | grep *cput=
 
 
 log()
@@ -26,7 +27,7 @@ diskspace()
 
 
 
-echo "backup completed in:", 
+echo "backup completed in:", time
 
 
 
