@@ -19,7 +19,7 @@ msub submit;
 rm submit;
 
 
-time=cat  | grep cput=
+time=cat  | grep *cput=
 
 
 log()
