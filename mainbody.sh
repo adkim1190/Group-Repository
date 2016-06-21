@@ -3,7 +3,7 @@
 
 rm myJob*
 
-#Wraps submition task
+#Wrap submition task
 
 echo "#!/bin/bash
 #MSUB -N ajob
