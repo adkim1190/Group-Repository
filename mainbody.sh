@@ -2,6 +2,8 @@
 #!/bin/bash
 
 rm myJob*
+mkdir ~/Backups/
+mkdir ~/Backups/$1/
 
 #Wrap submition task
 
@@ -19,7 +21,10 @@ cd \$PBS_O_WORKDIR
 Lastback='ls -t ~/Backups/$1 | head -1
 
 log()
-diskspace() > submit;
+
+cp $1 ~/Backups/$1/$(date +%F_%H.%M.%S)
+
+diskspace()" > submit;
 
 msub submit;
 rm submit;
