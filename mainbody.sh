@@ -1,55 +1,42 @@
-
 #!/bin/bash
+target=$1
+dest='~/Backups/'${target%/}_`date +%F_%H.%M.%S`
 
-rm myJob*
-mkdir ~/Backups/
-mkdir ~/Backups/$1/
+#Checks to make sure everything is in place (throws weird errors sometimes)
+if [ "$target" == "" ]; then
+	echo "Choose proper directory to backup"
+	return 
+elif [ ! -d ~/Backups ]; then
+	mkdir ~/Backups
+elif [ ! -d $dest ]; then
+	mkdir ${dest}
+fi
 
 #Wrap submition task
+echo "#!/bin/bash" > submit.sh
+echo "#MSUB -N backup_job" >> submit.sh
+echo "#MSUB -A b1011" >> submit.sh
+echo "#MSUB -q ligo" >> submit.sh
+echo "#MSUB -l walltime=00:00:20:00" >> submit.sh
+echo "#MSUB -l nodes=1:ppn=1" >> submit.sh
+echo "#MSUB -j oe" >> submit.sh
+echo "touch log.txt" >> submit.sh
+echo "source log.sh" >> submit.sh
+echo "cp -rv $1 $dest > log.txt" >> submit.sh
+echo "source diskspace.sh $dest" >> submit.sh
 
-echo "#!/bin/bash
-#MSUB -N ajob
-#MSUB -A b1011
-#MSUB -q ligo
-#MSUB -l walltime=00:00:00:20
-#MSUB -l nodes=1:ppn=1
-#MSUB -j oe
-
-cd \$PBS_O_WORKDIR
-
-#Finds recent backup to use in dif
-Lastback='ls -t ~/Backups/$1 | head -1
-
-log()
-
-cp $1 ~/Backups/$1/$(date +%F_%H.%M.%S)
-
-diskspace()" > submit;
-
-msub submit;
-rm submit;
-
-
+#msub submit.sh
+source submit.sh #for testing only
 #Periodically checks for new log file to find compute time
-
-while [ submit -nt myJob* ];
-	do
-	sleep 5
-	done
-
-time=`cat myJob* | grep -Eo 'cput=.{0,8}' | tr -d 'cput='
-
-
-echo "Backup completed"
-echo "cpu time:", time
-
-
-#cd .. | if [ -a FILE ] == False;
-#	then mkdir backups	
-#	else then a
-#	fi
-
-#cp $0  
-
-#Thought we should leave log file in backup folder
-mv myJob* ~/Backups/$1/$(ls -t | head -1)
+#while [ ! -e backup_job* ]; do
+#	sleep 5
+#done
+#
+#time=`cat backup_job* | grep -Eo 'cput=.{0,8}' | tr -d 'cput='
+#
+#
+#echo "Backup completed"
+#echo "cpu time: $time"
+#
+#rm submit.sh
+#rm log.txt
