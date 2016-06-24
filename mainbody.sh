@@ -6,10 +6,12 @@ if [ ! -d $1 ]; then
 	return
 elif [ -e myJob* ]; then
 	rm myJob*
+elif [ ! -d ~/Backups ]; then
+	mkdir ~/Backups
+elif [ ! -d ~/Backups/$1 ]; then
+        mkdir ~/Backups/$1
 fi
 
-mkdir ~/Backups/
-mkdir ~/Backups/$1/
 
 #Wrap submition task
 
@@ -17,7 +19,7 @@ echo "#!/bin/bash
 #MSUB -N myJob
 #MSUB -A b1011
 #MSUB -q ligo
-#MSUB -l walltime=00:00:02:00
+#MSUB -l walltime=00:00:05:00
 #MSUB -l nodes=1:ppn=1
 #MSUB -j oe
 
@@ -40,7 +42,7 @@ rm submit;
 
 while [ ! -e myJob* ];
 	do
-	sleep 5
+	sleep 10
 	done
 
 time=`cat myJob* | grep -Eo 'cput=.{0,8}' | tr -d 'cput='
