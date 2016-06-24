@@ -1,12 +1,13 @@
 #!/bin/bash
 
 #Makes sure directory to be backed up exists
-if [ -d $1 ];
-	then
-	return;
-	fi
+if [ ! -d $1 ]; then
+	echo "Choose a directory"
+	return
+elif [ -e myJob* ]; then
+	rm myJob*
+fi
 
-rm myJob*
 mkdir ~/Backups/
 mkdir ~/Backups/$1/
 
@@ -37,7 +38,7 @@ rm submit;
 
 #Periodically checks for new log file to find compute time
 
-while [ submit -nt myJob* ];
+while [ ! -e myJob* ];
 	do
 	sleep 5
 	done
