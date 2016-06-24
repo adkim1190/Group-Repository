@@ -16,20 +16,20 @@ echo "#!/bin/bash
 #MSUB -N myJob
 #MSUB -A b1011
 #MSUB -q ligo
-#MSUB -l walltime=00:00:00:20
+#MSUB -l walltime=00:00:02:00
 #MSUB -l nodes=1:ppn=1
 #MSUB -j oe
 
 cd \$PBS_O_WORKDIR
 
-#Finds recent backup to use in diff
-lastback=~/Backups/$1/$(ls -t ~/Backups/$1 | head -1)
+#backed up to here
+backdir=~/Backups/$1/$(date +%F_%H.%M.%S)
 
-source log.sh
+cp -r $1 $backdir
 
-cp $1 ~/Backups/$1/$(date +%F_%H.%M.%S)
+source diskspace.sh "$backdir"
 
-source diskspace.sh" > submit;
+source log.sh "$1" "$backdir"" > submit;
 
 msub submit;
 rm submit;
@@ -50,4 +50,4 @@ echo "cpu time:"$time
 
 
 #Thought we should leave log file in backup folder
-mv myJob* ~/Backups/$1/$(ls -t | head -1)
+mv myJob* $backdir
