@@ -35,7 +35,12 @@ cp -r $1 \$backdir
 
 source ~/Backupper/diskspace.sh \$backdir
 
-source ~/Backupper/log.sh $1 \$recdir \$backdir" > submit;
+source ~/Backupper/log.sh $1 \$recdir \$backdir
+
+while [ `ls -d ~/Backups/$1/` -gt 5 ];
+	do
+	rm -r ~/Backups/$1/$(ls -t ~/Backups/$1 | tail -1)
+	done" > submit;
 
 msub submit;
 rm submit;

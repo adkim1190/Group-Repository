@@ -1,4 +1,4 @@
-diff -bqr $1 $recdir | tee log.txt
+diff -bqr $1 $recdir >> log.txt
 mv log.txt $backdir
 
 #-b: ignore whitespace
