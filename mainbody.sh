@@ -2,14 +2,14 @@
 
 #Makes sure directory to be backed up exists
 if [ ! -d $1 ]; then
-	echo "Choose a directory"
-	return
+        echo "Choose a directory"
+        return
 elif [ -e myJob* ]; then
-	rm myJob*
+        rm myJob*
 elif [ ! -d ~/Backups ]; then
 	mkdir ~/Backups
 elif [ ! -d ~/Backups/$1 ]; then
-        mkdir ~/Backups/$1
+	mkdir ~/Backups/$1
 fi
 
 
@@ -25,14 +25,17 @@ echo "#!/bin/bash
 
 cd \$PBS_O_WORKDIR
 
+#recent backup
+recdir=~/Backups/$1/$(ls -t ~/Backups/$1 | head -1)
+
 #backed up to here
 backdir=~/Backups/$1/$(date +%F_%H.%M.%S)
 
-cp -r $1 $backdir
+cp -r $1 \$backdir
 
-source ~/Backupper/diskspace.sh "$backdir"
+source ~/Backupper/diskspace.sh \$backdir
 
-source ~/Backupper/log.sh "$1" "$backdir"" > submit;
+source ~/Backupper/log.sh $1 \$recdir \$backdir" > submit;
 
 msub submit;
 rm submit;
@@ -45,12 +48,12 @@ while [ ! -e myJob* ];
 	sleep 10
 	done
 
-time=`cat myJob* | grep -Eo 'cput=.{0,8}' | tr -d 'cput='
+time=$(cat myJob* | grep -Eo 'cput=.{0,8}' | tr -d 'cput=')
 
 
 echo "Backup completed"
-echo "cpu time:"$time
+echo "cpu time: "$time
 
 
 #Thought we should leave log file in backup folder
-mv myJob* $backdir
+mv myJob* ~/Backups/$1/$(ls -t ~/Backups/$1 | head -1)
