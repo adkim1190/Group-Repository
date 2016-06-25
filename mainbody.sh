@@ -30,9 +30,9 @@ backdir=~/Backups/$1/$(date +%F_%H.%M.%S)
 
 cp -r $1 $backdir
 
-source diskspace.sh "$backdir"
+source ~/Backupper/diskspace.sh "$backdir"
 
-source log.sh "$1" "$backdir"" > submit;
+source ~/Backupper/log.sh "$1" "$backdir"" > submit;
 
 msub submit;
 rm submit;
